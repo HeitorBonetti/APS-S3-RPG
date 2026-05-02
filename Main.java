@@ -175,6 +175,7 @@ static void Custom(String classe) {
     int vida;
     int ataque;
     int defesa;
+    int moedas = 0;
     
     System.out.print("\033[H\033[2J"); //Limpa Tela
     System.out.print("Digite o nome: ");
@@ -222,15 +223,15 @@ static void Custom(String classe) {
     
     switch (classe) {
         case "Guerreiro":
-            p = new Guerreiro(nome, vida, ataque, defesa);
+            p = new Guerreiro(nome, vida, ataque, defesa, moedas);
             break;
 
         case "Mago":
-            p = new Mago(nome, vida, ataque, defesa);
+            p = new Mago(nome, vida, ataque, defesa, moedas);
             break;
 
         case "Arqueiro":
-            p = new Arqueiro(nome, vida, ataque, defesa);
+            p = new Arqueiro(nome, vida, ataque, defesa, moedas);
             break;
     }
     
@@ -360,11 +361,11 @@ static void menuPersonagem() {
 static void combate() {
     int escolhaInimigo = random.nextInt(3);
     if (escolhaInimigo == 1) {
-    inimigo = new Personagem("Goblin", 60, 15, 5);
+    inimigo = new Personagem("Goblin", 60, 15, 5, 10);
     } else if (escolhaInimigo == 2) {
-        inimigo = new Personagem("Mímico", 80, 30, 7);
+        inimigo = new Personagem("Mímico", 80, 30, 7, 15);
     } else
-        inimigo = new Personagem("Esqueleto", 30, 20, 3);
+        inimigo = new Personagem("Esqueleto", 30, 20, 3, 5);
 
     while (true) {
         System.out.print("\033[H\033[2J"); //Limpa Tela
@@ -387,9 +388,19 @@ static void combate() {
                         if (inimigo.getPontosDeVida() <= 0) {
                             System.out.print("\033[H\033[2J");
                             System.out.println(inimigo.getNome() + " derrotado!");
-                            inimigo = null;
-                            delay(1500);
-                            return;
+                                p.receberMoedas(inimigo);
+                            int mercanteAmbulante = random.nextInt(2);
+                            if (mercanteAmbulante == 1) {
+                                Loja minhaLoja = new Loja(1);
+                                minhaLoja.mostrarLoja(p);
+                                inimigo = null;
+                                return;
+                            }
+                            else {
+                                delay(1500);
+                                return;
+                            }
+
                         } else {
                             continue;
                         } 
@@ -419,6 +430,9 @@ static void combate() {
                         sc.nextLine();
                         continue;
                     } else {
+                        if (inimigo == null) {
+                            return;
+                        }
                         int dano = inimigo.getAtaque();
                         System.out.print("\033[H\033[2J");
                         System.out.println("Falha na esquiva!");

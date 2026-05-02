@@ -3,14 +3,15 @@ public class Personagem {
     private int pontosDeVida;
     private int ataque;
     private int defesa;
-
+    private int moedas;
 
     // Constructor
-    Personagem(String nome, int pontosDeVida, int ataque, int defesa) {
+    Personagem(String nome, int pontosDeVida, int ataque, int defesa, int moedas) {
         this.nome = nome;
         this.pontosDeVida = pontosDeVida;
         this.ataque = ataque;
         this.defesa = defesa;
+        this.moedas = moedas;
     }
 
     // Atacar
@@ -46,6 +47,21 @@ public class Personagem {
         
     }
 
+    public void receberMoedas(Personagem inimigo) {
+        if (inimigo.getNome().equals("Esqueleto")) {
+            moedas += 5;
+            System.out.println("Você derrotou o inimigo e ganhou " +  moedas + " moedas");
+        }
+        if (inimigo.getNome().equals("Goblin")) {
+            moedas += 10;
+            System.out.println("Você derrotou o inimigo e ganhou " +  moedas + " moedas");
+        }
+        if (inimigo.getNome().equals("Mímico")) {
+            moedas += 15;
+            System.out.println("Você derrotou o inimigo e ganhou " +  moedas + " moedas");
+        }
+    }
+
     // Getter
     public String getNome() {
         return nome;
@@ -66,6 +82,10 @@ public class Personagem {
         return defesa;
     }
 
+    public int getMoedas() {
+        return moedas;
+    }
+
     // Setter
     public void setNome(String nome) {
         this.nome = nome;
@@ -84,5 +104,9 @@ public class Personagem {
 
     public void setDefesa(int defesa) {
         this.defesa = defesa;
+    }
+
+    public void setMoedas(int moedas) {
+        this.moedas = moedas;
     }
 }
