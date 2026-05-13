@@ -1,11 +1,11 @@
 public class Mago extends Personagem {
 
     public Mago(String nome) {
-        super(nome, 70, 30, 8, 0);
+        super(nome, 70, 30, 8, 0, 1, 0);
     }
 
-    public Mago(String nome, int vida, int ataque, int defesa, int moedas) {
-        super(nome, vida, ataque, defesa, moedas);
+    public Mago(String nome, int vida, int ataque, int defesa, int moedas, int nivel, int xpAoMorrer) {
+        super(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer);
     }
 
     @Override

@@ -3,11 +3,11 @@ import java.util.Random;
 public class Arqueiro extends Personagem{
 
     public Arqueiro(String nome) {
-        super(nome, 90, 22, 12,0);
+        super(nome, 90, 22, 12,0, 1,0);
     }
 
-    public Arqueiro(String nome, int vida, int ataque, int defesa, int moedas) {
-        super(nome, vida, ataque, defesa, moedas);
+    public Arqueiro(String nome, int vida, int ataque, int defesa, int moedas, int nivel, int xpAoMorrer) {
+        super(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer);
     }
 
     @Override

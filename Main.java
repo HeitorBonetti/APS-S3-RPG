@@ -176,6 +176,8 @@ static void Custom(String classe) {
     int ataque;
     int defesa;
     int moedas = 0;
+    int nivel = 1;
+    int xpAoMorrer = 0;
     
     System.out.print("\033[H\033[2J"); //Limpa Tela
     System.out.print("Digite o nome: ");
@@ -223,15 +225,15 @@ static void Custom(String classe) {
     
     switch (classe) {
         case "Guerreiro":
-            p = new Guerreiro(nome, vida, ataque, defesa, moedas);
+            p = new Guerreiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer);
             break;
 
         case "Mago":
-            p = new Mago(nome, vida, ataque, defesa, moedas);
+            p = new Mago(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer);
             break;
 
         case "Arqueiro":
-            p = new Arqueiro(nome, vida, ataque, defesa, moedas);
+            p = new Arqueiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer);
             break;
     }
     
@@ -361,11 +363,11 @@ static void menuPersonagem() {
 static void combate() {
     int escolhaInimigo = random.nextInt(3);
     if (escolhaInimigo == 1) {
-    inimigo = new Personagem("Goblin", 60, 15, 5, 10);
+    inimigo = new Personagem("Goblin", 60, 15, 5, 10, 2, 200);
     } else if (escolhaInimigo == 2) {
-        inimigo = new Personagem("Mímico", 80, 30, 7, 15);
+        inimigo = new Personagem("Mímico", 80, 30, 7, 15,3, 300);
     } else
-        inimigo = new Personagem("Esqueleto", 30, 20, 3, 5);
+        inimigo = new Personagem("Esqueleto", 30, 20, 3, 5, 1, 100);
 
     while (true) {
         System.out.print("\033[H\033[2J"); //Limpa Tela
@@ -389,6 +391,8 @@ static void combate() {
                             System.out.print("\033[H\033[2J");
                             System.out.println(inimigo.getNome() + " derrotado!");
                                 p.receberMoedas(inimigo);
+                                System.out.println("Você ganhou " + inimigo.getXpAoMorrer() + " de XP!");
+                                p.receberExp(inimigo.getXpAoMorrer());
                             int mercanteAmbulante = random.nextInt(2);
                             if (mercanteAmbulante == 1) {
                                 Loja minhaLoja = new Loja(1);

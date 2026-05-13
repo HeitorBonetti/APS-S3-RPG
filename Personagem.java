@@ -4,14 +4,20 @@ public class Personagem {
     private int ataque;
     private int defesa;
     private int moedas;
+    private static final int EXPERIENCIA[] = {100, 200, 300, 400, 500};
+    private int nivel = 1;
+    private int xpAtual = 0;
+    private int xpAoMorrer;
 
     // Constructor
-    Personagem(String nome, int pontosDeVida, int ataque, int defesa, int moedas) {
+    Personagem(String nome, int pontosDeVida, int ataque, int defesa, int moedas, int nivel, int xpAoMorrer) {
         this.nome = nome;
         this.pontosDeVida = pontosDeVida;
         this.ataque = ataque;
         this.defesa = defesa;
         this.moedas = moedas;
+        this.nivel = nivel;
+        this.xpAoMorrer = xpAoMorrer;
     }
 
     // Atacar
@@ -62,6 +68,23 @@ public class Personagem {
         }
     }
 
+    private void evoluirNivel() {
+        this.pontosDeVida += 5;
+        this.ataque += 4;
+        this.defesa += 2;
+    }
+
+    public void receberExp(int xp) {
+        xpAtual += xp;
+        while (nivel <= EXPERIENCIA.length && xpAtual >= EXPERIENCIA[nivel - 1]) {
+            xpAtual -= EXPERIENCIA[nivel - 1];
+            nivel++;
+            System.out.println("Subiu de nível! " + "Agora você é nível " +  nivel);
+
+            evoluirNivel();
+        }
+    }
+
     // Getter
     public String getNome() {
         return nome;
@@ -84,6 +107,14 @@ public class Personagem {
 
     public int getMoedas() {
         return moedas;
+    }
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public int getXpAoMorrer() {
+        return xpAoMorrer;
     }
 
     // Setter
