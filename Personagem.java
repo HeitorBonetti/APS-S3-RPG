@@ -8,9 +8,13 @@ public class Personagem {
     private int nivel = 1;
     private int xpAtual = 0;
     private int xpAoMorrer;
+    private int qntdPocoes = 0;
+    private int qntdPocoesVida = 0;
+    private int qntdPocoesMana = 0;
+    private int vidaMaxima;
 
     // Constructor
-    Personagem(String nome, int pontosDeVida, int ataque, int defesa, int moedas, int nivel, int xpAoMorrer) {
+    Personagem(String nome, int pontosDeVida, int ataque, int defesa, int moedas, int nivel, int xpAoMorrer, int vidaMaxima) {
         this.nome = nome;
         this.pontosDeVida = pontosDeVida;
         this.ataque = ataque;
@@ -18,6 +22,7 @@ public class Personagem {
         this.moedas = moedas;
         this.nivel = nivel;
         this.xpAoMorrer = xpAoMorrer;
+        this.vidaMaxima = vidaMaxima;
     }
 
     // Atacar
@@ -69,7 +74,7 @@ public class Personagem {
     }
 
     private void evoluirNivel() {
-        this.pontosDeVida += 5;
+        this.vidaMaxima += 5;
         this.ataque += 4;
         this.defesa += 2;
     }
@@ -84,6 +89,20 @@ public class Personagem {
             evoluirNivel();
         }
     }
+
+    public void curar(int quantidade) {
+        this.pontosDeVida += quantidade;
+        if (this.pontosDeVida > this.vidaMaxima) {
+            this.pontosDeVida = this.vidaMaxima;
+        }
+        System.out.println("HP atual: " + this.pontosDeVida + "/" + this.vidaMaxima);
+    }
+
+
+    //PLACEHOLDER pra qnd for colocar habilidades que usem mana
+//    public void recuperarMana(int mana) {
+//        this.
+//    }
 
     // Getter
     public String getNome() {
@@ -117,6 +136,14 @@ public class Personagem {
         return xpAoMorrer;
     }
 
+    public int getQntdPocoesVida() {
+        return qntdPocoesVida;
+    }
+
+    public int getQntdPocoesMana() {
+        return qntdPocoesMana;
+    }
+
     // Setter
     public void setNome(String nome) {
         this.nome = nome;
@@ -139,5 +166,13 @@ public class Personagem {
 
     public void setMoedas(int moedas) {
         this.moedas = moedas;
+    }
+
+    public void setQntdPocoesVida(int qntdPocoesVida) {
+        this.qntdPocoesVida = qntdPocoesVida;
+    }
+
+    public void setQntdPocoesMana(int qntdPocoesMana) {
+        this.qntdPocoesMana = qntdPocoesMana;
     }
 }

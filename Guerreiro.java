@@ -1,11 +1,11 @@
 public class Guerreiro extends Personagem {
 
     public Guerreiro(String nome) {
-        super(nome, 120, 20, 15,0, 1,0);
+        super(nome, 120, 20, 15,0, 1,0, 120);
     }
 
-    public Guerreiro(String nome, int vida, int ataque, int defesa, int moedas, int nivel, int xpAoMorrer) {
-        super(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer);
+    public Guerreiro(String nome, int vida, int ataque, int defesa, int moedas, int nivel, int xpAoMorrer, int vidaMaxima) {
+        super(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima);
     }
 
     @Override

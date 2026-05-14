@@ -6,6 +6,7 @@ public class Main {
     static Random random = new Random();
     static Personagem p = null;
     static Personagem inimigo = null;
+    static Inventario inv = new Inventario();
     
 public static void main(String[] args) {
         Principal();
@@ -178,6 +179,7 @@ static void Custom(String classe) {
     int moedas = 0;
     int nivel = 1;
     int xpAoMorrer = 0;
+    int vidaMaxima = 0;
     
     System.out.print("\033[H\033[2J"); //Limpa Tela
     System.out.print("Digite o nome: ");
@@ -225,15 +227,15 @@ static void Custom(String classe) {
     
     switch (classe) {
         case "Guerreiro":
-            p = new Guerreiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer);
+            p = new Guerreiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima);
             break;
 
         case "Mago":
-            p = new Mago(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer);
+            p = new Mago(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima);
             break;
 
         case "Arqueiro":
-            p = new Arqueiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer);
+            p = new Arqueiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima);
             break;
     }
     
@@ -333,7 +335,7 @@ static void menuPersonagem() {
         System.out.print("\033[H\033[2J");
         System.out.println("Você escolheu " + p.getClass().getSimpleName());
         System.out.println("[A] Andar");
-        System.out.println("[B] ...");
+        System.out.println("[B] Inventário");
         System.out.println("[C] Voltar");
         String opcao = sc.nextLine();
         switch(opcao) {
@@ -351,7 +353,14 @@ static void menuPersonagem() {
                 break;
 
             case "B":
-                return;
+                System.out.print("\033[H\033[2J");
+                inv.checarInventario(p);
+                if (p.getQntdPocoesVida() > 0) {
+                    inv.utilizarPocao(p);
+                } else {
+                    break;
+                }
+
 
             case "C":
                 return;
@@ -363,11 +372,11 @@ static void menuPersonagem() {
 static void combate() {
     int escolhaInimigo = random.nextInt(3);
     if (escolhaInimigo == 1) {
-    inimigo = new Personagem("Goblin", 60, 15, 5, 10, 2, 200);
+    inimigo = new Personagem("Goblin", 60, 15, 5, 10, 2, 200, 60);
     } else if (escolhaInimigo == 2) {
-        inimigo = new Personagem("Mímico", 80, 30, 7, 15,3, 300);
+        inimigo = new Personagem("Mímico", 80, 30, 7, 15,3, 300, 80);
     } else
-        inimigo = new Personagem("Esqueleto", 30, 20, 3, 5, 1, 100);
+        inimigo = new Personagem("Esqueleto", 30, 20, 3, 5, 1, 100, 30);
 
     while (true) {
         System.out.print("\033[H\033[2J"); //Limpa Tela
@@ -395,7 +404,7 @@ static void combate() {
                                 p.receberExp(inimigo.getXpAoMorrer());
                             int mercanteAmbulante = random.nextInt(2);
                             if (mercanteAmbulante == 1) {
-                                Loja minhaLoja = new Loja(1);
+                                Loja minhaLoja = new Loja(1, 1);
                                 minhaLoja.mostrarLoja(p);
                                 inimigo = null;
                                 return;
