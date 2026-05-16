@@ -2,22 +2,42 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Arqueiro extends Personagem{
+    Random random = new Random();
+    Scanner sc = new Scanner(System.in);
 
     public Arqueiro(String nome) {
-        super(nome, 90, 22, 12,0, 1,0, 90, 20, 20);
+        super(nome, 90, 22, 12, 0, 1, 0, 90, 20, 20);
         this.Habilidades.add("Rj");
-    }
-
-    public Arqueiro(String nome, int vida, int ataque, int defesa, int moedas, int nivel, int xpAoMorrer, int vidaMaxima, int mana, int manaMaxima) {
-        super(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima, mana, manaMaxima);
     }
 
     @Override
     public void atacar(Personagem inimigo) {
-        Random random = new Random();
+
         System.out.println(this.getNome() + " Flecha disparada!");
         System.out.println("");
         inimigo.receberDano(this.getAtaque() + random.nextInt(11));
+    }
+
+    @Override
+    public void defender(Personagem inimigo) {
+        int escolha = random.nextInt(2);
+        int danoFinal;
+        if (escolha == 0) {
+            System.out.println(this.getNome() + " defendeu o ataque de " + inimigo.getNome());
+            System.out.println(this.getNome() + " ganhou 1 ponto de mana");
+            setMana(this.getMana() + 1);
+        } else {
+            System.out.println(inimigo.getNome() + " acertou de raspão em " + this.getNome());
+            danoFinal = inimigo.getAtaque() / 2;
+            setPontosDeVida(this.getPontosDeVida() - danoFinal);
+            System.out.println(this.getNome() + " perdeu " + danoFinal + " de vida.");
+            System.out.println(this.getNome() + " ainda possui " + this.getPontosDeVida() + " restante");
+        }
+    }
+
+    @Override
+    public void especial(Personagem inimigo) {
+    System.out.println(this.getNome() + " super ataque em" + inimigo + "!");
     }
 
     @Override
@@ -70,7 +90,6 @@ public class Arqueiro extends Personagem{
 
     @Override
     public void escolherHabilidadeNivel3() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("\n------ ESCOLHA UMA HABILIDADE PASSIVA ------");
         System.out.println("[1] Recuperação de Mana");
         System.out.println("[2] mtaura +20 mana maxima");
@@ -86,7 +105,6 @@ public class Arqueiro extends Personagem{
 
     @Override
     public void escolherHabilidadeNivel5() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("--- ESCOLHA SUPREMA DE GUERREIRO ---");
         System.out.println("[1] All-Range\n[2] Divine Arrow");
         int escolha = sc.nextInt();

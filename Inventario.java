@@ -1,18 +1,18 @@
 import java.util.Scanner;
 
 public class Inventario {
-
-    Scanner scanner = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
 
     public void checarInventario(Personagem p) {
         System.out.println("Você possui: " + p.getMoedas() + " moedas");
         System.out.println("Você possui: " + p.getQntdPocoesVida() + " poções de vida");
         System.out.println("Você possui: " + p.getQntdPocoesMana() + " poções de mana");
+        sc.nextLine();
     }
 
     public void utilizarPocao(Personagem p) {
         System.out.println("Deseja utilizar uma das poções disponíveis em seu inventário?" + " A - Vida, B - Mana, C - Voltar");
-        String opcao = scanner.nextLine();
+        String opcao = sc.nextLine();
         switch (opcao) {
             case "A":
                 if (p.getQntdPocoesVida() > 0) {
@@ -22,6 +22,7 @@ public class Inventario {
                 } else {
                     System.out.println("Você não tem nenhuma poção de vida!");
                 }
+                delay(1500);
                 break;
 
             case "B":
@@ -32,11 +33,24 @@ public class Inventario {
                 } else {
                     System.out.println("Você não tem nenhuma poção de mana!");
                 }
+                delay(1500);
                 break;
 
             case "C":
                 System.out.println("Continue sua jornada");
+                delay(1500);
                 break;
         }
     }
+
+//MÉTODO PARA DAR UM DELAY ANTES DE DAR BREAK NO WHILE
+static void delay(int ms) {
+    try {
+        Thread.sleep(ms);
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+    }
+
+}
+
 }

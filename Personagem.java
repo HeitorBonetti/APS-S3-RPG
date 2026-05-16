@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Personagem {
+public abstract class Personagem {
     private String nome;
     private int pontosDeVida;
     private int ataque;
@@ -40,6 +40,11 @@ public class Personagem {
 
         inimigo.receberDano(this.ataque);
     }
+
+    // Defender
+    abstract void defender(Personagem p);
+
+    abstract void especial(Personagem p);
 
     // levar dano e diminuir hp ⬇️
     public void receberDano(int danoRecebido) {

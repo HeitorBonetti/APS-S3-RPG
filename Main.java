@@ -136,108 +136,24 @@ static void Adicionar() {
 //MENU QUE CRIA O OBJETO PERSONAGEM
 static void escolhaPersonagem(String classe) {
     System.out.print("\033[H\033[2J");
-    System.out.println("Você escolheu " + classe);
-    System.out.println("[A] Pré Definido");
-    System.out.println("[B] Customizável");
-    String opcao = sc.nextLine();
-    switch(opcao) {
-        case "A":
-            System.out.print("\033[H\033[2J"); //Limpa Tela
-            System.out.println("Digite o nome do seu " + classe + ": ");
-            String nome = sc.nextLine();
+    System.out.println("Você escolheu " + classe + "!!!");
+    delay(1500);
 
-        switch (classe) {
-            case "Guerreiro":
-                p = new Guerreiro(nome);
-                break;
-
-            case "Mago":
-                p = new Mago(nome);
-                break;
-
-            case "Arqueiro":
-                p = new Arqueiro(nome);
-                break;
-        }
-            
-            System.out.print("\033[H\033[2J"); //Limpa Tela
-            System.out.println("Personagem criado com sucesso!");
-            delay(1500);
-            break;
-
-        case "B":
-            Custom(classe);
-            break;
-    }
-}
-
-//MENU PARA CUSTOMIZAR UM PERSONAGEM
-static void Custom(String classe) {
-    int vida;
-    int ataque;
-    int defesa;
-    int moedas = 0;
-    int nivel = 1;
-    int xpAoMorrer = 0;
-    int vidaMaxima = 0;
-    int mana = 0;
-    int manaMaxima = 0;
-    
     System.out.print("\033[H\033[2J"); //Limpa Tela
-    System.out.print("Digite o nome: ");
+    System.out.print("Digite o nome do seu " + classe + ": ");
     String nome = sc.nextLine();
 
-    while (true) {
-        System.out.print("\033[H\033[2J"); //Limpa Tela
-        System.out.print("Digite a vida: ");
-        vida = sc.nextInt();
-        if (vida > 0) {
-            break;
-        } else {
-            System.out.println("A vida não pode ser 0 ou negativa.");
-            delay(1500);
-            continue;
-        }  
-    }
-    
-    while (true) {
-        System.out.print("\033[H\033[2J"); //Limpa Tela
-        System.out.print("Digite o ataque: ");
-        ataque = sc.nextInt();
-        if (ataque > 0) {
-            break;
-        } else {
-            System.out.println("O ataque não pode ser 0 ou negativo.");
-            delay(1500);
-            continue;
-        } 
-    }
-
-    while (true) {
-        System.out.print("\033[H\033[2J"); //Limpa Tela
-        System.out.print("Digite a defesa: ");
-        defesa = sc.nextInt();
-        if (defesa >= 0) {
-            break;
-        } else {
-            System.out.println("A defesa não pode ser negativa.");
-            delay(1500);
-            continue;
-        }   
-    }
-    sc.nextLine();
-    
     switch (classe) {
         case "Guerreiro":
-            p = new Guerreiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima, mana, manaMaxima);
+            p = new Guerreiro(nome);
             break;
 
         case "Mago":
-            p = new Mago(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima, mana, manaMaxima);
+            p = new Mago(nome);
             break;
 
         case "Arqueiro":
-            p = new Arqueiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima, mana, manaMaxima);
+            p = new Arqueiro(nome);
             break;
     }
     
@@ -344,7 +260,7 @@ static void menuPersonagem() {
             case "A":
                 int sorte = random.nextInt(2);
 
-                if (sorte == 1) {
+                if (sorte == 0) {
                     System.out.print("\033[H\033[2J");
                     System.out.println("Você está a caminho do reino!");
                     delay(1500);
@@ -373,21 +289,22 @@ static void menuPersonagem() {
 //COMBATE COM INIMIGOS
 static void combate() {
     int escolhaInimigo = random.nextInt(3);
-    if (escolhaInimigo == 1) {
-        inimigo = new Personagem("Goblin", 60, 15, 5, 10, 2, 200, 60, 30, 30);
-    } else if (escolhaInimigo == 2) {
-        inimigo = new Personagem("Mímico", 80, 30, 7, 15, 3, 300, 80, 90, 90);
+    if (escolhaInimigo == 0) {
+        inimigo = new Inimigo.Goblin();
+    } else if (escolhaInimigo == 1) {
+        inimigo = new Inimigo.Mimico();
     } else
-        inimigo = new Personagem("Esqueleto", 30, 20, 3, 5, 1, 100, 30, 15, 15);
+        inimigo = new Inimigo.Esqueleto();
 
     while (true) {
         System.out.print("\033[H\033[2J"); //Limpa Tela
         System.out.println("Você encontrou um " + inimigo.getNome() + "!");
         System.out.println("");
         System.out.println("O que deseja fazer?");
-        System.out.println("[1] Atacar");
-        System.out.println("[2] Esquivar");
-        System.out.println("[3] Habilidades");
+        System.out.println("[1] Atacar"); 
+        System.out.println("[2] Defender");
+        System.out.println("[3] Esquivar"); 
+        System.out.println("[4] Habilidades");
         int opcao_escolha = sc.nextInt();
         sc.nextLine();
 
@@ -395,7 +312,7 @@ static void combate() {
         switch (opcao_escolha) {
             case 1:
                 escolha = random.nextInt(2);
-                if (escolha == 1) {
+                if (escolha == 0) {
                     System.out.print("\033[H\033[2J"); //Limpa Tela
                     p.atacar(inimigo);
                     p.passivasTurno();
@@ -406,8 +323,9 @@ static void combate() {
                         p.receberMoedas(inimigo);
                         System.out.println("Você ganhou " + inimigo.getXpAoMorrer() + " de XP!");
                         p.receberExp(inimigo.getXpAoMorrer());
+                        sc.nextLine();
                         int mercanteAmbulante = random.nextInt(2);
-                        if (mercanteAmbulante == 1) {
+                        if (mercanteAmbulante == 0) {
                             Loja minhaLoja = new Loja(1, 1);
                             minhaLoja.mostrarLoja(p);
                             inimigo = null;
@@ -420,6 +338,10 @@ static void combate() {
                     } else {
                         continue;
                     }
+                
+                } else if (escolha == 1) {
+                    System.out.print("\033[H\033[2J"); //Limpa Tela
+                    acaoInimigo();
 
                 } else {
                     int dano = inimigo.getAtaque();
@@ -437,10 +359,24 @@ static void combate() {
                     }
                     continue;
                 }
+            break;
 
             case 2:
+                System.out.print("\033[H\033[2J"); //Limpa Tela
+                p.defender(inimigo);
+                sc.nextLine(); 
+                if (p.getPontosDeVida() <= 0) {
+                    System.out.print("\033[H\033[2J");
+                    System.out.println("Você perdeu!");
+                    p = null;
+                    delay(1500);
+                    return;
+                }
+            break;
+
+            case 3:
                 escolha = random.nextInt(2);
-                if (escolha == 1) {
+                if (escolha == 0) {
                     System.out.print("\033[H\033[2J");
                     System.out.println("Ataque esquivado com sucesso!");
                     sc.nextLine();
@@ -465,11 +401,13 @@ static void combate() {
                     continue;
                 }
 
-            case 3:
+            case 4:
                 if (p.getHabilidades().isEmpty()) {
+                    System.out.print("\033[H\033[2J"); //Limpa Tela
                     System.out.println("Você não possui nenhuma habilidade no momento!");
                     delay(1500);
                 } else {
+                    System.out.print("\033[H\033[2J"); //Limpa Tela
                     System.out.println("------ HABILIDADES ------");
                     for (int i = 0; i < p.getHabilidades().size(); i++) {
                         System.out.println(i + " - " + p.getHabilidades().get(i));
@@ -490,8 +428,10 @@ static void combate() {
                             p.receberMoedas(inimigo);
                             System.out.println("Você ganhou " + inimigo.getXpAoMorrer() + " de XP!");
                             p.receberExp(inimigo.getXpAoMorrer());
+                            System.out.println("Pressione ENTER para CONTINUAR:");
+                            sc.nextLine();
                             int mercanteAmbulante = random.nextInt(2);
-                            if (mercanteAmbulante == 1) {
+                            if (mercanteAmbulante == 0) {
                                 Loja minhaLoja = new Loja(1, 1);
                                 minhaLoja.mostrarLoja(p);
                                 inimigo = null;
@@ -523,6 +463,27 @@ static void combate() {
     }
 }
 
+static void acaoInimigo() {
+    int escolha;
+    if (inimigo.getMana() < 20 && inimigo.getPontosDeVida() > 30) {
+        escolha = random.nextInt(2);
+        if (escolha == 0) {
+            System.out.print("\033[H\033[2J"); //Limpa Tela
+            inimigo.defender(p);
+            sc.nextLine();
+        } else {
+            System.out.print("\033[H\033[2J"); //Limpa Tela
+            inimigo.atacar(p);
+            sc.nextLine();  
+        }
+    } else {
+        System.out.print("\033[H\033[2J"); //Limpa Tela
+        inimigo.especial(p);
+        sc.nextLine(); 
+    }
+    
+
+}
 
                 
 //MENU PARA SAIR DO JOGO
