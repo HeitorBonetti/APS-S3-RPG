@@ -24,16 +24,15 @@ public class Inventario {
                 }
                 break;
 
-                // PLACEHOLDER pro uso da pocao de mana
-//            case "B":
-//                if (p.getQntdPocoesMana() > 0) {
-//                    p.setQntdPocoesMana(p.getQntdPocoesMana() - 1);
-//                    p.recuperarMana(25);
-//                    System.out.println("Você usou uma poção! " + " +25 Mana!");
-//                } else {
-//                    System.out.println("Você não tem nenhuma poção de mana!");
-//                }
-//                break;
+            case "B":
+                if (p.getQntdPocoesMana() > 0) {
+                    p.setQntdPocoesMana(p.getQntdPocoesMana() - 1);
+                    p.recuperarMana(25);
+                    System.out.println("Você usou uma poção! " + " +25 Mana!");
+                } else {
+                    System.out.println("Você não tem nenhuma poção de mana!");
+                }
+                break;
 
             case "C":
                 System.out.println("Continue sua jornada");

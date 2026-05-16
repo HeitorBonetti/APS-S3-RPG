@@ -180,6 +180,8 @@ static void Custom(String classe) {
     int nivel = 1;
     int xpAoMorrer = 0;
     int vidaMaxima = 0;
+    int mana = 0;
+    int manaMaxima = 0;
     
     System.out.print("\033[H\033[2J"); //Limpa Tela
     System.out.print("Digite o nome: ");
@@ -227,15 +229,15 @@ static void Custom(String classe) {
     
     switch (classe) {
         case "Guerreiro":
-            p = new Guerreiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima);
+            p = new Guerreiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima, mana, manaMaxima);
             break;
 
         case "Mago":
-            p = new Mago(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima);
+            p = new Mago(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima, mana, manaMaxima);
             break;
 
         case "Arqueiro":
-            p = new Arqueiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima);
+            p = new Arqueiro(nome, vida, ataque, defesa, moedas, nivel, xpAoMorrer, vidaMaxima, mana, manaMaxima);
             break;
     }
     
@@ -372,98 +374,155 @@ static void menuPersonagem() {
 static void combate() {
     int escolhaInimigo = random.nextInt(3);
     if (escolhaInimigo == 1) {
-    inimigo = new Personagem("Goblin", 60, 15, 5, 10, 2, 200, 60);
+        inimigo = new Personagem("Goblin", 60, 15, 5, 10, 2, 200, 60, 30, 30);
     } else if (escolhaInimigo == 2) {
-        inimigo = new Personagem("Mímico", 80, 30, 7, 15,3, 300, 80);
+        inimigo = new Personagem("Mímico", 80, 30, 7, 15, 3, 300, 80, 90, 90);
     } else
-        inimigo = new Personagem("Esqueleto", 30, 20, 3, 5, 1, 100, 30);
+        inimigo = new Personagem("Esqueleto", 30, 20, 3, 5, 1, 100, 30, 15, 15);
 
     while (true) {
         System.out.print("\033[H\033[2J"); //Limpa Tela
         System.out.println("Você encontrou um " + inimigo.getNome() + "!");
         System.out.println("");
         System.out.println("O que deseja fazer?");
-        System.out.println("[1] Atacar"); 
+        System.out.println("[1] Atacar");
         System.out.println("[2] Esquivar");
+        System.out.println("[3] Habilidades");
         int opcao_escolha = sc.nextInt();
         sc.nextLine();
-            
+
         int escolha;
-        switch(opcao_escolha) {
+        switch (opcao_escolha) {
             case 1:
                 escolha = random.nextInt(2);
-                    if (escolha == 1) {
-                        System.out.print("\033[H\033[2J"); //Limpa Tela
-                        p.atacar(inimigo);
+                if (escolha == 1) {
+                    System.out.print("\033[H\033[2J"); //Limpa Tela
+                    p.atacar(inimigo);
+                    p.passivasTurno();
+                    sc.nextLine();
+                    if (inimigo.getPontosDeVida() <= 0) {
+                        System.out.print("\033[H\033[2J");
+                        System.out.println(inimigo.getNome() + " derrotado!");
+                        p.receberMoedas(inimigo);
+                        System.out.println("Você ganhou " + inimigo.getXpAoMorrer() + " de XP!");
+                        p.receberExp(inimigo.getXpAoMorrer());
+                        int mercanteAmbulante = random.nextInt(2);
+                        if (mercanteAmbulante == 1) {
+                            Loja minhaLoja = new Loja(1, 1);
+                            minhaLoja.mostrarLoja(p);
+                            inimigo = null;
+                            return;
+                        } else {
+                            delay(1500);
+                            return;
+                        }
+
+                    } else {
+                        continue;
+                    }
+
+                } else {
+                    int dano = inimigo.getAtaque();
+                    System.out.print("\033[H\033[2J");
+                    System.out.println("Você errou o ataque!");
+                    System.out.println("");
+                    p.receberDano(dano);
+                    sc.nextLine();
+                    if (p.getPontosDeVida() <= 0) {
+                        System.out.print("\033[H\033[2J");
+                        System.out.println("Você perdeu!");
+                        p = null;
+                        delay(1500);
+                        return;
+                    }
+                    continue;
+                }
+
+            case 2:
+                escolha = random.nextInt(2);
+                if (escolha == 1) {
+                    System.out.print("\033[H\033[2J");
+                    System.out.println("Ataque esquivado com sucesso!");
+                    sc.nextLine();
+                    continue;
+                } else {
+                    if (inimigo == null) {
+                        return;
+                    }
+                    int dano = inimigo.getAtaque();
+                    System.out.print("\033[H\033[2J");
+                    System.out.println("Falha na esquiva!");
+                    System.out.println("");
+                    p.receberDano(dano);
+                    sc.nextLine();
+                    if (p.getPontosDeVida() <= 0) {
+                        System.out.print("\033[H\033[2J");
+                        System.out.println("Você perdeu!");
+                        p = null;
+                        delay(1500);
+                        return;
+                    }
+                    continue;
+                }
+
+            case 3:
+                if (p.getHabilidades().isEmpty()) {
+                    System.out.println("Você não possui nenhuma habilidade no momento!");
+                    delay(1500);
+                } else {
+                    System.out.println("------ HABILIDADES ------");
+                    for (int i = 0; i < p.getHabilidades().size(); i++) {
+                        System.out.println(i + " - " + p.getHabilidades().get(i));
+                    }
+                    System.out.println("Escolha uma habilidade (ou -1 para voltar):");
+                    int opcaoHabilidade = sc.nextInt();
+                    sc.nextLine();
+
+                    if (opcaoHabilidade >= 0 && opcaoHabilidade < p.getHabilidades().size()) {
+                        System.out.print("\033[H\033[2J"); // Limpa Tela
+                        p.usarHabilidadeAtiva(opcaoHabilidade, inimigo);
+                        p.passivasTurno();
                         sc.nextLine();
+
                         if (inimigo.getPontosDeVida() <= 0) {
                             System.out.print("\033[H\033[2J");
                             System.out.println(inimigo.getNome() + " derrotado!");
-                                p.receberMoedas(inimigo);
-                                System.out.println("Você ganhou " + inimigo.getXpAoMorrer() + " de XP!");
-                                p.receberExp(inimigo.getXpAoMorrer());
+                            p.receberMoedas(inimigo);
+                            System.out.println("Você ganhou " + inimigo.getXpAoMorrer() + " de XP!");
+                            p.receberExp(inimigo.getXpAoMorrer());
                             int mercanteAmbulante = random.nextInt(2);
                             if (mercanteAmbulante == 1) {
                                 Loja minhaLoja = new Loja(1, 1);
                                 minhaLoja.mostrarLoja(p);
                                 inimigo = null;
                                 return;
-                            }
-                            else {
+                            } else {
                                 delay(1500);
                                 return;
                             }
-
                         } else {
+                            int dano = inimigo.getAtaque();
+                            System.out.print("\033[H\033[2J");
+                            System.out.println("Você errou o ataque!");
+                            System.out.println("");
+                            p.receberDano(dano);
+                            sc.nextLine();
+                            if (p.getPontosDeVida() <= 0) {
+                                System.out.print("\033[H\033[2J");
+                                System.out.println("Você perdeu!");
+                                p = null;
+                                delay(1500);
+                                return;
+                            }
                             continue;
-                        } 
-
-                    } else {
-                        int dano = inimigo.getAtaque();
-                        System.out.print("\033[H\033[2J");
-                        System.out.println("Você errou o ataque!");
-                        System.out.println("");
-                        p.receberDano(dano);
-                        sc.nextLine();
-                        if (p.getPontosDeVida() <= 0) {
-                            System.out.print("\033[H\033[2J");
-                            System.out.println("Você perdeu!");
-                            p = null;
-                            delay(1500);
-                            return;   
                         }
-                        continue;
                     }
-                
-            case 2:
-                escolha = random.nextInt(2);
-                    if (escolha == 1) {
-                        System.out.print("\033[H\033[2J");
-                        System.out.println("Ataque esquivado com sucesso!");
-                        sc.nextLine();
-                        continue;
-                    } else {
-                        if (inimigo == null) {
-                            return;
-                        }
-                        int dano = inimigo.getAtaque();
-                        System.out.print("\033[H\033[2J");
-                        System.out.println("Falha na esquiva!");
-                        System.out.println("");
-                        p.receberDano(dano);
-                        sc.nextLine();
-                        if (p.getPontosDeVida() <= 0) {
-                            System.out.print("\033[H\033[2J");
-                            System.out.println("Você perdeu!");
-                            p = null;
-                            delay(1500);
-                            return;
-                        }
-                        continue;
-                    }
+                }
+                break;
         }
     }
 }
+
 
                 
 //MENU PARA SAIR DO JOGO

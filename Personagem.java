@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Personagem {
     private String nome;
     private int pontosDeVida;
@@ -12,9 +15,13 @@ public class Personagem {
     private int qntdPocoesVida = 0;
     private int qntdPocoesMana = 0;
     private int vidaMaxima;
+    protected int mana;
+    protected int manaMaxima;
+    protected List<String> Habilidades = new ArrayList<>();
+    protected List<String> Passivas = new ArrayList<>();
 
     // Constructor
-    Personagem(String nome, int pontosDeVida, int ataque, int defesa, int moedas, int nivel, int xpAoMorrer, int vidaMaxima) {
+    Personagem(String nome, int pontosDeVida, int ataque, int defesa, int moedas, int nivel, int xpAoMorrer, int vidaMaxima, int mana, int manaMaxima) {
         this.nome = nome;
         this.pontosDeVida = pontosDeVida;
         this.ataque = ataque;
@@ -23,6 +30,8 @@ public class Personagem {
         this.nivel = nivel;
         this.xpAoMorrer = xpAoMorrer;
         this.vidaMaxima = vidaMaxima;
+        this.mana = mana;
+        this.manaMaxima = manaMaxima;
     }
 
     // Atacar
@@ -84,9 +93,14 @@ public class Personagem {
         while (nivel <= EXPERIENCIA.length && xpAtual >= EXPERIENCIA[nivel - 1]) {
             xpAtual -= EXPERIENCIA[nivel - 1];
             nivel++;
-            System.out.println("Subiu de nível! " + "Agora você é nível " +  nivel);
+            System.out.println("Subiu de nível! " + "Agora você é nível " + nivel);
 
             evoluirNivel();
+            if (this.nivel == 3) {
+                this.escolherHabilidadeNivel3();
+            } else if (this.nivel == 5) {
+                this.escolherHabilidadeNivel5();
+            }
         }
     }
 
@@ -98,11 +112,49 @@ public class Personagem {
         System.out.println("HP atual: " + this.pontosDeVida + "/" + this.vidaMaxima);
     }
 
+    public void recuperarMana(int quantidade) {
+        this.mana += quantidade;
+        if (this.mana > this.manaMaxima) {
+            this.mana = this.manaMaxima;
+        }
+    }
 
-    //PLACEHOLDER pra qnd for colocar habilidades que usem mana
-//    public void recuperarMana(int mana) {
-//        this.
-//    }
+    // usar habilidade ativa
+    public void usarHabilidadeAtiva(int habilidadeLista, Personagem inimigo) {
+        inimigo.receberDano(this.ataque);
+    }
+
+    public void escolherHabilidadeNivel3() {
+    }
+
+    public void escolherHabilidadeNivel5() {
+    }
+
+    public void passivasTurno() {
+        if (Passivas.contains("REGEN_MANA")) {
+            this.setMana(this.getMana() + 5);
+            System.out.println("[PASSIVA] +5 Mana");
+        }
+
+        if (Passivas.contains("REGEN_HP")) {
+            this.curar(3);
+            System.out.println("[PASSIVA] +3 HP");
+        }
+
+        // opcional
+        if (Passivas.contains("MAIS_ATQ")) {
+            this.setAtaque(this.getAtaque() + 2);
+        }
+
+        if (Passivas.contains("MAIS_DEF")) {
+            this.setDefesa(this.getDefesa() + 2);
+            System.out.println("[PASSIVA] +2 DEF");
+        }
+
+        if (this.mana > this.manaMaxima) {
+            this.mana = this.manaMaxima;
+        }
+    }
 
     // Getter
     public String getNome() {
@@ -144,6 +196,22 @@ public class Personagem {
         return qntdPocoesMana;
     }
 
+    public List<String> getHabilidades() {
+        return Habilidades;
+    }
+
+    public List<String> getPassivas() {
+        return Passivas;
+    }
+
+    public int getMana() {
+        return mana;
+    }
+
+    public int getManaMaxima() {
+        return manaMaxima;
+    }
+
     // Setter
     public void setNome(String nome) {
         this.nome = nome;
@@ -174,5 +242,21 @@ public class Personagem {
 
     public void setQntdPocoesMana(int qntdPocoesMana) {
         this.qntdPocoesMana = qntdPocoesMana;
+    }
+
+    public void setHabilidades(List<String> habilidades) {
+        Habilidades = habilidades;
+    }
+
+    public void setPassivas(List<String> passivas) {
+        Passivas = passivas;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    public void setManaMaxima(int manaMaxima) {
+        this.manaMaxima = manaMaxima;
     }
 }
